@@ -1,0 +1,24 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+
+# PROVIDE: ix-syncdisks
+# REQUIRE: earlykld
+# BEFORE: fsck
+
+. /etc/rc.subr
+
+syncdisks()
+{
+	touch /tmp/.sync_disk_done
+	echo "Syncing disks..."
+	/usr/local/bin/midclt call --job true disk.sync_all > /dev/null
+}
+
+name="ix-syncdisks"
+start_cmd='syncdisks'
+stop_cmd=''
+
+load_rc_config $name
+run_rc_command "$1"
